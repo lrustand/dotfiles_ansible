@@ -6,9 +6,23 @@
   become_user: "{{ username }}"
 
 - name: Configure mutt
-  template:
-    src: HOME/.mutt/muttrc.j2
+  copy:
+    src: HOME/.mutt/muttrc
     dest: /home/{{ username }}/.mutt/muttrc
+  become: yes
+  become_user: "{{ username }}"
+
+- name: Add mailcap
+  copy:
+    src: HOME/.mutt/mailcap
+    dest: /home/{{ username }}/.mutt/mailcap
+  become: yes
+  become_user: "{{ username }}"
+
+- name: Configure gmail account in mutt
+  template:
+    src: HOME/.mutt/gmail.j2
+    dest: /home/{{ username }}/.mutt/gmail
   become: yes
   become_user: "{{ username }}"
 

@@ -1,0 +1,5 @@
+text/html; qutebrowser %s; nametemplate=%s.html
+text/html; w3m -I %{charset} -T text/html -dump; copiousoutput;
+image/png; feh %s
+image/jpeg; feh %s
+application/pdf; okular %s

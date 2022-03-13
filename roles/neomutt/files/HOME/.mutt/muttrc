@@ -1,0 +1,231 @@
+source gmail
+
+# Folder with emails
+set folder = "~/Maildir"
+# Type of mailbox
+set mbox_type = Maildir
+# Directory to poll for new mail
+set spoolfile = +INBOX
+# Directory to save sent messages into
+set record = +Sent
+# Sets the drafts folder
+set postponed = +Drafts
+# File that headers will be cached
+set header_cache = ~/.cache/mutt
+
+# Sort by threads
+set sort = threads
+# Sort threads by last date recieved - newest first
+set sort_aux = reverse-last-date-received
+# Show date in year/month/day hour:minute format
+set date_format="%y/%m/%d %I:%M%p"
+
+# Mailcap file is used to tell mutt how to open different types of file
+set mailcap_path = "~/.mutt/mailcap"
+
+# Fix background color
+color normal default default
+
+# Tells Mutt to automatically view files with these mime types
+auto_view text/html
+# Order to try and show multipart emails
+alternative_order text/plain text/enriched text/html
+
+set ssl_starttls=no
+set ssl_force_tls=no
+# Use nvim but don't force text width (looks terible if read on a phone)
+set editor = "nvim +':set textwidth=0'"
+
+
+set collapse_all = yes
+set uncollapse_new = no # (default is yes)
+
+
+
+# Navigation
+# ----------------------------------------------------
+
+bind generic             z         noop
+bind index,pager,attach  g         noop
+bind index,pager         d         noop
+bind index,pager         s         noop
+bind index,pager         c         noop
+bind generic,pager       t         noop
+
+bind generic,index,pager \Cf       next-page
+bind generic,index,pager \Cb       previous-page
+bind generic             gg        first-entry
+bind generic,index       G         last-entry
+bind pager               gg        top
+bind pager               G         bottom
+bind generic,pager       \Cy       previous-line
+bind generic,index,pager \Ce       next-line
+bind generic,index,pager \Cd       half-down
+bind generic,index,pager \Cu       half-up
+bind generic             zt        current-top
+bind generic             zz        current-middle
+bind generic             zb        current-bottom
+bind index               za        collapse-thread
+bind index               zA        collapse-all
+bind index,pager         N         search-opposite
+bind index               <Backtab> previous-new-then-unread
+
+# Go to folder...
+macro index,pager gi "<change-folder>=INBOX<enter>"       "open inbox"
+macro index,pager gd "<change-folder>=Drafts<enter>"      "open drafts"
+macro index,pager gs "<change-folder>=Sent<enter>"        "open sent"
+macro index,pager gt "<change-folder>$trash<enter>"       "open trash"
+macro index,pager gf "<change-folder>?"                   "open mailbox..."
+
+# Actions
+# ----------------------------------------------------
+
+bind  index,pager    a   group-reply
+macro index,pager    dd  "<delete-message><sync-mailbox>"                                 "move message to trash"
+macro index,pager    dat "<delete-thread><sync-mailbox>"                                  "move thread to trash"
+macro index,pager    ss  ":macro browser \\015 \"\<select-entry\>\<sync-mailbox\>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015\"\015:macro browser q \"<exit>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015\"\015<save-message>?"                                                                                                                                     "save message to a mailbox"
+macro index          sat ":macro browser \\015 \"\<select-entry\>\<sync-mailbox\>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015\"\015:macro browser q \"<exit>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015'q<untag-pattern>.\\015\"\015<mark-message>q<enter><untag-pattern>.<enter><tag-thread><tag-prefix-cond><save-message>?"                                    "save thread to a mailbox"
+macro index          \;s ":macro browser \\015 \"\<select-entry\>\<sync-mailbox\>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015\"\015:macro browser q \"<exit>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015\"\015<tag-prefix-cond><save-message>?"                                                                                                                    "save tagged messages to a mailbox"
+macro pager          sat ":macro browser \\015 \"\<select-entry\>\<sync-mailbox\>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015<display-message>\"\015:macro browser q \"<exit>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015'q<untag-pattern>.\\015<display-message>\"\015<exit><mark-message>q<enter><untag-pattern>.<enter><tag-thread><tag-prefix><save-message>?" "save thread to a mailbox"
+macro index,pager    cc  ":macro browser \\015 \"\<select-entry\>\<sync-mailbox\>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015\"\015:macro browser q \"<exit>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015\"\015<copy-message>?"                                                                                                                                     "copy message to a mailbox"
+macro index          cat ":macro browser \\015 \"\<select-entry\>\<sync-mailbox\>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015\"\015:macro browser q \"<exit>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015'q<untag-pattern>.\\015\"\015<mark-message>q<enter><untag-pattern>.<enter><tag-thread><tag-prefix-cond><copy-message>?"                                    "copy thread to a mailbox"
+macro index          \;c ":macro browser \\015 \"\<select-entry\>\<sync-mailbox\>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015\"\015:macro browser q \"<exit>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015\"\015<tag-prefix-cond><copy-message>?"                                                                                                                    "copy tagged messages to a mailbox"
+macro pager          cat ":macro browser \\015 \"\<select-entry\>\<sync-mailbox\>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015<display-message>\"\015:macro browser q \"<exit>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015'q<untag-pattern>.\\015<display-message>\"\015<exit><mark-message>q<enter><untag-pattern>.<enter><tag-thread><tag-prefix><copy-message>?" "copy thread to a mailbox"
+bind  generic        tt  tag-entry
+bind  index          tat tag-thread
+bind  pager          tt  tag-message
+macro pager          tat "<exit><mark-message>q<enter><tag-thread>'q<display-message>"    "tag-thread"
+macro index,pager    gx  "<pipe-message>urlview<Enter>"                                   "call urlview to extract URLs out of a message"
+macro attach,compose gx  "<pipe-entry>urlview<Enter>"                                     "call urlview to extract URLs out of a message"
+
+# Pager View Options ---------------------------------
+bind pager j next-line
+bind pager k previous-line
+set tilde
+unset markers              # no ugly plus signs
+set pager_index_lines=7
+
+#apply mutt commands by default to all selected (tagged) messages without using tag-prefix
+set auto_tag = yes
+
+# basic colors ---------------------------------------------------------
+color error         red             default
+#color tilde         black           default
+color message       cyan            default
+color markers       red             white
+color attachment    white           default
+color search        brightmagenta   default
+#color status        J_black         J_status
+color status        brightyellow    black
+color indicator     default         black
+color tree          yellow          default                                     # arrow in threads
+
+# basic monocolor screen
+mono  bold          bold
+mono  underline     underline
+mono  indicator     reverse
+mono  error         bold
+
+# index ----------------------------------------------------------------
+
+#color index         red             default         "~D(!~p|~p)"               # deleted
+#color index         black           default         ~F                         # flagged
+#color index         brightred       default         ~=                         # duplicate messages
+#color index         brightgreen     default         "~A!~N!~T!~p!~Q!~F!~D!~P"  # the rest
+#color index         J_base          default         "~A~N!~T!~p!~Q!~F!~D"      # the rest, new
+color index         red             default         "~A"                        # all messages
+color index         brightred       default         "~E"                        # expired messages
+color index         blue            default         "~N"                        # new messages
+color index         blue            default         "~O"                        # old messages
+color index         brightmagenta   default         "~Q"                        # messages that have been replied to
+color index         default         default         "~R"                        # read messages
+color index         blue            default         "~U"                        # unread messages
+color index         blue            default         "~U~$"                      # unread, unreferenced messages
+color index         brightyellow    default         "~v"                        # messages part of a collapsed thread
+color index         brightyellow    default         "~P"                        # messages from me
+color index         cyan            default         "~p!~F"                     # messages to me
+color index         cyan            default         "~N~p!~F"                   # new messages to me
+color index         cyan            default         "~U~p!~F"                   # unread messages to me
+color index         brightgreen     default         "~R~p!~F"                   # messages to me
+color index         red             default         "~F"                        # flagged messages
+color index         red             default         "~F~p"                      # flagged messages to me
+color index         red             default         "~N~F"                      # new flagged messages
+color index         red             default         "~N~F~p"                    # new flagged messages to me
+color index         red             default         "~U~F~p"                    # new flagged messages to me
+color index         black           red             "~D"                        # deleted messages
+color index         default         default         "~v~(!~N)"                  # collapsed thread with no unread
+color index         yellow          default         "~v~(~N)"                   # collapsed thread with some unread
+color index         green           default         "~N~v~(~N)"                 # collapsed thread with unread parent
+# statusbg used to indicated flagged when foreground color shows other status
+# for collapsed thread
+color index         red             default         "~v~(~F)!~N"                # collapsed thread with flagged, no unread
+color index         yellow          default         "~v~(~F~N)"                 # collapsed thread with some unread & flagged
+color index         green           default         "~N~v~(~F~N)"               # collapsed thread with unread parent & flagged
+color index         green           default         "~N~v~(~F)"                 # collapsed thread with unread parent, no unread inside, but some flagged
+color index         cyan            default         "~v~(~p)"                   # collapsed thread with unread parent, no unread inside, some to me directly
+color index         yellow          red             "~v~(~D)"                   # thread with deleted (doesn't differentiate between all or partial)
+#color index         yellow          default         "~(~N)"                    # messages in threads with some unread
+#color index         green           default         "~S"                       # superseded messages
+#color index         red             default         "~T"                       # tagged messages
+#color index         brightred       red             "~="                       # duplicated messages
+
+# message headers ------------------------------------------------------
+
+#color header        brightgreen     default         "^"
+color hdrdefault    brightgreen     default
+color header        brightyellow    default         "^(From)"
+color header        blue            default         "^(Subject)"
+
+# body -----------------------------------------------------------------
+
+color quoted        blue            default
+color quoted1       cyan            default
+color quoted2       yellow          default
+color quoted3       red             default
+color quoted4       brightred       default
+
+color signature     brightgreen     default
+color bold          black           default
+color underline     black           default
+color normal        default         default
+#
+
+## pgp
+
+color body          red             default         "(BAD signature)"
+color body          cyan            default         "(Good signature)"
+color body          brightblack     default         "^gpg: Good signature .*"
+color body          brightyellow    default         "^gpg: "
+color body          brightyellow    red             "^gpg: BAD signature from.*"
+mono  body          bold                            "^gpg: Good signature"
+mono  body          bold                            "^gpg: BAD signature from.*"
+
+# yes, an insane URL regex
+color body          red             default         "([a-z][a-z0-9+-]*://(((([a-z0-9_.!~*'();:&=+$,-]|%[0-9a-f][0-9a-f])*@)?((([a-z0-9]([a-z0-9-]*[a-z0-9])?)\\.)*([a-z]([a-z0-9-]*[a-z0-9])?)\\.?|[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)(:[0-9]+)?)|([a-z0-9_.!~*'()$,;:@&=+-]|%[0-9a-f][0-9a-f])+)(/([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*(;([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*)*(/([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*(;([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*)*)*)?(\\?([a-z0-9_.!~*'();/?:@&=+$,-]|%[0-9a-f][0-9a-f])*)?(#([a-z0-9_.!~*'();/?:@&=+$,-]|%[0-9a-f][0-9a-f])*)?|(www|ftp)\\.(([a-z0-9]([a-z0-9-]*[a-z0-9])?)\\.)*([a-z]([a-z0-9-]*[a-z0-9])?)\\.?(:[0-9]+)?(/([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*(;([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*)*(/([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*(;([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*)*)*)?(\\?([-a-z0-9_.!~*'();/?:@&=+$,]|%[0-9a-f][0-9a-f])*)?(#([-a-z0-9_.!~*'();/?:@&=+$,]|%[0-9a-f][0-9a-f])*)?)[^].,:;!)? \t\r\n<>\"]"
+# and a heavy handed email regex
+color body          magenta       default         "((@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\]),)*@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\]):)?[0-9a-z_.+%$-]+@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\])"
+
+# Various smilies and the like
+#color body          brightwhite     default         "<[Gg]>"                            # <g>
+#color body          brightwhite     default         "<[Bb][Gg]>"                        # <bg>
+#color body          yellow          default         " [;:]-*[})>{(<|]"                  # :-) etc...
+# *bold*
+#color body          blue            default         "(^|[[:space:][:punct:]])\\*[^*]+\\*([[:space:][:punct:]]|$)"
+#mono  body          bold                            "(^|[[:space:][:punct:]])\\*[^*]+\\*([[:space:][:punct:]]|$)"
+# _underline_
+#color body          blue            default         "(^|[[:space:][:punct:]])_[^_]+_([[:space:][:punct:]]|$)"
+#mono  body          underline                       "(^|[[:space:][:punct:]])_[^_]+_([[:space:][:punct:]]|$)"
+# /italic/  (Sometimes gets directory names)
+#color body         blue            default         "(^|[[:space:][:punct:]])/[^/]+/([[:space:][:punct:]]|$)"
+#mono body          underline                       "(^|[[:space:][:punct:]])/[^/]+/([[:space:][:punct:]]|$)"
+
+# Border lines.
+#color body          blue            default         "( *[-+=#*~_]){6,}"
+
+
+ignore *                                # ignore all headers
+unignore from: to: cc: date: subject:   # show only these
+unhdr_order *                           # some distros order things by default
+hdr_order Date: From: To: Cc: Subject:  # and in this order
+
+#set sidebar_visible = yes
