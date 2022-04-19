@@ -5,3 +5,20 @@
     mode: '0600'
   become: yes
   become_user: "{{ username }}"
+
+- name: Install davmail service
+  copy:
+    src: HOME/.config/systemd/user/davmail.service
+    dest: /home/{{ username }}/.config/systemd/user/davmail.service
+    mode: '0600'
+  become: yes
+  become_user: "{{ username }}"
+
+- name: Enable davmail service
+  systemd:
+    name: davmail
+    scope: user
+    enabled: yes
+    state: restarted
+  become: yes
+  become_user: "{{ username }}"

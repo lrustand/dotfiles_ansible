@@ -1,0 +1,10 @@
+[Unit]
+Description=Davmail Office365 Excange gateway
+
+[Service]
+Environment=DISPLAY=:0
+ExecStart=/usr/bin/davmail %h/.davmail.properties
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
