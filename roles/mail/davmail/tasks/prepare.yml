@@ -1,0 +1,4 @@
+- assert:
+    that:
+      - item.provider == "gmail" or item.provider == "outlook"
+  loop: "{{ email_accounts }}"

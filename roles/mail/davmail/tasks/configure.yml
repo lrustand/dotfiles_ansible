@@ -1,0 +1,7 @@
+- name: Configure davmail
+  copy:
+    src: HOME/.davmail.properties
+    dest: /home/{{ username }}/.davmail.properties
+    mode: '0600'
+  become: yes
+  become_user: "{{ username }}"

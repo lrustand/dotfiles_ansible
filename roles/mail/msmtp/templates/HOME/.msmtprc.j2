@@ -15,9 +15,18 @@ port           587
 host           smtp.gmail.com
 passwordeval   "pass show $(find ~/.password-store -wholename '*/mutt/{{ email.address }}' | cut -d '/' -f 5-)/app_password"
 {% elif email.provider == "outlook" %}
+{% if "mail/davmail" in role_names %}
+tls            off
+auth           plain
+host           127.0.0.1
+port           1025
+passwordeval   "pass show $(find ~/.password-store -wholename '*/mutt/{{ email.address }}' | cut -d '/' -f 5-)/app_password"
+{% else %}
 auth           xoauth2
 host           smtp.office365.com
 passwordeval   "pass show $(find ~/.password-store -wholename '*/mutt/{{ email.address }}' | cut -d '/' -f 5-)/refresh_token"
+{% endif %}
+{% endif %}
 
 {% endfor %}
 

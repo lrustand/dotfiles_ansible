@@ -40,12 +40,19 @@ remoteuser = {{ email.address }}
 remotehost = imap.gmail.com
 remotepasseval = get_app_password("{{ email.address }}")
 {% elif email.provider == "outlook" %}
+{% if "mail/davmail" in role_names %}
+ssl = no
+remotehost = 127.0.0.1
+remoteport = 1143
+remotepasseval = get_app_password("{{ email.address }}")
+{% else %}
 remotehost = outlook.office365.com
 auth_mechanisms = XOAUTH2
 oauth2_request_url = https://login.microsoftonline.com/common/oauth2/v2.0/token
 oauth2_client_id_eval = get_client_id("{{ email.address }}")
 oauth2_client_secret_eval = get_client_secret("{{ email.address }}")
 oauth2_refresh_token_eval = get_refresh_token("{{ email.address }}")
+{% endif %}
 {% endif %}
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 
