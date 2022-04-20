@@ -1,0 +1,33 @@
+- name: Download davmail
+  get_url:
+    url: https://downloads.sourceforge.net/davmail/davmail-6.0.1-3390.zip
+    dest: /tmp/davmail.zip
+    checksum: md5:b48b08a59f4a51efba7b0009a4d72dce
+
+- name: Create temporary folder for davmail
+  file:
+    path: /tmp/davmail/
+    state: directory
+  become: yes
+
+- name: Unpack davmail
+  unarchive:
+    src: /tmp/davmail.zip
+    dest: /tmp/davmail/
+    remote_src: yes
+  become: yes
+
+- name: Install davmail wrapper script
+  copy:
+    src: usr/share/java/davmail.sh
+    dest: /usr/share/java/davmail.sh
+    mode: '0755'
+  become: yes
+
+- name: Install davmail
+  shell: |
+    install -d /usr/share/java/davmail/lib
+    install -Dm644 davmail.jar /usr/share/java/davmail/
+    install -D /tmp/davmail/lib/* /usr/share/java/davmail/lib
+    ln -sf /usr/share/java/davmail/davmail.sh /usr/bin/davmail
+  become: yes
