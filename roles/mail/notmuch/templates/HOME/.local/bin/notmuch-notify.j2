@@ -1,0 +1,14 @@
+#!/bin/bash
+
+SUBJECT="$1"
+MESSAGE="$2"
+
+cat <<EOF | notmuch insert --folder {{ email_accounts[0].account_name }}/INBOX +new
+From: Notmuch Notify <notify@notmuch.something>
+To: {{ fullname }} <{{ email_accounts[0].address }}>
+Subject: $SUBJECT
+Date: $(date -R)
+
+$MESSAGE
+
+EOF

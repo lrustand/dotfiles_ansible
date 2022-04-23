@@ -12,3 +12,11 @@
     mode: '0600'
   become: yes
   become_user: "{{ username }}"
+
+- name: Add notmuch-notify script
+  template:
+    src: HOME/.local/bin/notmuch-notify.j2
+    dest: /home/{{ username }}/.local/bin/notmuch-notify
+    mode: '0700'
+  become: yes
+  become_user: "{{ username }}"
