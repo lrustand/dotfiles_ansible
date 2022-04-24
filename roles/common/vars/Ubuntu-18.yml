@@ -1,0 +1,17 @@
+devtools:
+  - git
+  - htop
+  - python3
+  - tree
+  - ncdu
+    # TODO: fix fzf
+    # - fzf
+  - unzip
+  - cmake
+  - man
+
+hwtools:
+  - pciutils
+  - usbutils
+
+sudoers_file: /etc/sudoers
