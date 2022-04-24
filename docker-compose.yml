@@ -4,19 +4,29 @@ services:
     build:
       dockerfile: docker/arch/Dockerfile
       context: .
+    environment:
+       - "COLORTERM=${COLORTERM}"
   debian:
     build:
       dockerfile: docker/debian/Dockerfile
       context: .
+    environment:
+       - "COLORTERM=${COLORTERM}"
   debian-testing:
     build:
       dockerfile: docker/debian-testing/Dockerfile
       context: .
+    environment:
+       - "COLORTERM=${COLORTERM}"
   debian-unstable:
     build:
       dockerfile: docker/debian-unstable/Dockerfile
       context: .
+    environment:
+       - "COLORTERM=${COLORTERM}"
   ubuntu:
     build:
       dockerfile: docker/ubuntu/Dockerfile
       context: .
+    environment:
+       - "COLORTERM=${COLORTERM}"
