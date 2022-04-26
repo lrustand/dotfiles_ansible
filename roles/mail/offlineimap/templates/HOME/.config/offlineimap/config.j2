@@ -21,7 +21,7 @@ autorefresh = 0.5
 # refresh, regardless of type.
 quick = 10
 {% if "mail/notmuch" in role_names %}
-postsynchook = ~/.config/notmuch/default/notmuch.sh
+postsynchook = ~/.config/offlineimap/postsync.sh
 {% endif %}
 
 [Repository {{ email.account_name }}-local]
