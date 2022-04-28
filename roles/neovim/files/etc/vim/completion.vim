@@ -150,4 +150,8 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
     capabilities = capabilities,
     on_attach=custom_attach
   }
+  require('lspconfig')['cmake'].setup {
+    capabilities = capabilities,
+    on_attach=custom_attach
+  }
 EOF

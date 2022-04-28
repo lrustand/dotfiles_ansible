@@ -66,3 +66,13 @@
     - c
     - cpp
     - lsp
+
+- name: Install cmake language server
+  pip:
+    name:
+      - cmake-language-server
+    state: present
+  become: yes
+  tags:
+    - cmake
+    - lsp
