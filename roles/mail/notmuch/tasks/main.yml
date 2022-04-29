@@ -11,6 +11,12 @@
   tags:
     - notmuch
 
+- import_tasks: clean.yml
+  tags:
+    - never
+    - clean
+    - notmuch.clean
+
 - import_tasks: uninstall.yml
   tags:
     - never

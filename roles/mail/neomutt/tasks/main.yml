@@ -11,6 +11,12 @@
   tags:
     - neomutt
 
+- import_tasks: clean.yml
+  tags:
+    - never
+    - clean
+    - neomutt.clean
+
 - import_tasks: uninstall.yml
   tags:
     - never

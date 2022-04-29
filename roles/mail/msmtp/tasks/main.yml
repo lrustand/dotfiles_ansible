@@ -15,6 +15,12 @@
   tags:
     - msmtp
 
+- import_tasks: clean.yml
+  tags:
+    - never
+    - clean
+    - msmtp.clean
+
 - import_tasks: uninstall.yml
   tags:
     - never

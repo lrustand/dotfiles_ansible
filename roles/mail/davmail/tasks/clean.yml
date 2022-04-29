@@ -1,0 +1,6 @@
+- name: Remove old davmail config
+  file:
+    path: /home/{{ username }}/.davmail.properties
+    state: absent
+  become: yes
+  become_user: "{{ username }}"

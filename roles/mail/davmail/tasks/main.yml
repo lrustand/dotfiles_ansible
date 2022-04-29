@@ -15,6 +15,12 @@
   tags:
     - davmail
 
+- import_tasks: clean.yml
+  tags:
+    - never
+    - clean
+    - davmail.clean
+
 - import_tasks: uninstall.yml
   tags:
     - never

@@ -1,0 +1,6 @@
+- name: Remove old notmuch config files
+  file:
+    path: /home/{{ username }}/.config/notmuch/default/notmuch.sh
+    state: absent
+  become: yes
+  become_user: "{{ username }}"

@@ -1,0 +1,11 @@
+- name: Remove old offlineimap config files
+  file:
+    path: "{{ item }}"
+    state: absent
+  become: yes
+  become_user: "{{ username }}"
+  loop:
+    - /home/{{ username }}/.offlineimap/auth.py
+    - /home/{{ username }}/.offlineimap/notify-new.py
+    - /home/{{ username }}/.config/offlineimap/notify-new.sh
+    - /home/{{ username }}/.offlineimaprc

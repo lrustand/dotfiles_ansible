@@ -1,0 +1,6 @@
+- name: Remove old msmtp config
+  file:
+    path: /home/{{ username }}/.msmtprc
+    state: absent
+  become: yes
+  become_user: "{{ username }}"

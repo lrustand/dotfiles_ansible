@@ -15,6 +15,12 @@
   tags:
     - offlineimap
 
+- import_tasks: clean.yml
+  tags:
+    - never
+    - clean
+    - offlineimap.clean
+
 - import_tasks: uninstall.yml
   tags:
     - never

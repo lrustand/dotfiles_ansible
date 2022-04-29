@@ -1,0 +1,15 @@
+- name: Remove old neomutt config files
+  file:
+    path: "{{ item }}"
+    state: absent
+  become: yes
+  become_user: "{{ username }}"
+  loop:
+    - /home/{{ username }}/.mutt/muttrc
+    - /home/{{ username }}/.mutt/accounts/
+    - /home/{{ username }}/.mutt/colors
+    - /home/{{ username }}/.mutt/keybinds
+    - /home/{{ username }}/.mutt/powerline
+    - /home/{{ username }}/.mutt/mailcap
+    - /home/{{ username }}/.mutt/switchaccount.sh
+    - /home/{{ username }}/.mutt/oauth2.py
