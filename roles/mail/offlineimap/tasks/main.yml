@@ -14,6 +14,7 @@
       - offlineimap.configure
   tags:
     - offlineimap
+    - mail
 
 - import_tasks: clean.yml
   tags:

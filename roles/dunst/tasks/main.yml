@@ -11,6 +11,7 @@
   tags:
     - dunst
     - notifications
+    - gui
 
 - import_tasks: uninstall.yml
   tags:

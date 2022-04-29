@@ -10,6 +10,7 @@
       - notmuch.configure
   tags:
     - notmuch
+    - mail
 
 - import_tasks: clean.yml
   tags:

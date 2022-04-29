@@ -5,3 +5,4 @@
       name: terminal/urxvt
   tags:
     - terminal/all
+    - gui

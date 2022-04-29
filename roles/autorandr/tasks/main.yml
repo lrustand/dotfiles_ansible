@@ -10,6 +10,7 @@
       - autorandr.configure
   tags:
     - autorandr
+    - gui
 
 - import_tasks: uninstall.yml
   tags:

@@ -14,6 +14,7 @@
       - davmail.configure
   tags:
     - davmail
+    - mail
 
 - import_tasks: clean.yml
   tags:

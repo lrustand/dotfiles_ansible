@@ -9,3 +9,5 @@
     name: "{{ pulseaudio_bluetooth }}"
     state: present
   become: yes
+  tags:
+    - sound

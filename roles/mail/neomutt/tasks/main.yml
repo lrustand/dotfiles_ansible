@@ -10,6 +10,7 @@
       - neomutt.configure
   tags:
     - neomutt
+    - mail
 
 - import_tasks: clean.yml
   tags:
