@@ -1,13 +1,51 @@
-- import_role:
-    name: wm/qtile
+---
+- block:
+  - import_role:
+      name: wm/i3
+      tasks_from: configure
+    tags:
+      - i3
+      - i3.configure
+  - import_role:
+      name: wm/qtile
+      tasks_from: configure
+    tags:
+      - qtile
+      - qtile.configure
   tags:
+    - wm/all.configure
     - wm/all
-    - qtile
-    - wm
 
-- import_role:
-    name: wm/i3
+- block:
+  - import_role:
+      name: wm/i3
+      tasks_from: install
+    tags:
+      - i3
+      - i3.install
+  - import_role:
+      name: wm/qtile
+      tasks_from: install
+    tags:
+      - qtile
+      - qtile.install
   tags:
+    - wm/all.install
     - wm/all
-    - i3
-    - wm
+
+- block:
+  - import_role:
+      name: wm/i3
+      tasks_from: uninstall
+    tags:
+      - i3
+      - i3.uninstall
+  - import_role:
+      name: wm/qtile
+      tasks_from: uninstall
+    tags:
+      - qtile
+      - qtile.uninstall
+  tags:
+    - wm/all.uninstall
+    - wm/all

@@ -2,7 +2,50 @@
 - block:
   - import_role:
       name: shell/fish
+      tasks_from: configure
+    tags:
+      - fish.configure
+      - fish
   - import_role:
       name: shell/zsh
+      tasks_from: configure
+    tags:
+      - zsh.configure
+      - zsh
   tags:
+    - shell/all.configure
+    - shell/all
+
+- block:
+  - import_role:
+      name: shell/fish
+      tasks_from: install
+    tags:
+      - fish.install
+      - fish
+  - import_role:
+      name: shell/zsh
+      tasks_from: install
+    tags:
+      - zsh.install
+      - zsh
+  tags:
+    - shell/all.install
+    - shell/all
+
+- block:
+  - import_role:
+      name: shell/fish
+      tasks_from: uninstall
+    tags:
+      - fish.uninstall
+      - fish
+  - import_role:
+      name: shell/zsh
+      tasks_from: uninstall
+    tags:
+      - zsh.uninstall
+      - zsh
+  tags:
+    - shell/all.uninstall
     - shell/all
