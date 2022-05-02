@@ -10,4 +10,4 @@ fi
 
 autorandr --change
 
-exec qtile
+exec qtile start
