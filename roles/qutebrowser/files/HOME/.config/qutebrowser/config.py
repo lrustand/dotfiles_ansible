@@ -163,3 +163,9 @@ config.bind(',P', 'spawn --userscript qute-pass --password-only')
 # Open in MPV
 config.bind(';m', 'hint links spawn --detach mpv --force-window yes {hint-url}')
 config.bind(',m', 'spawn --detach mpv --force-window yes {url}')
+
+# Open urls through dmenu
+config.bind("o", "spawn --userscript qutedmenu open")
+config.bind("O", "spawn --userscript qutedmenu tab")
+config.bind("wo", "spawn --userscript qutedmenu window")
+config.bind("W", "spawn --userscript qutedmenu private")
