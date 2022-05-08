@@ -38,3 +38,5 @@
   become: yes
   become_user: "{{ username }}"
   loop: "{{ email_accounts }}"
+  tags:
+    - systemd

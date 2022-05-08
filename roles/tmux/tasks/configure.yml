@@ -16,9 +16,15 @@
   register: tpm
   become: yes
   become_user: "{{ username }}"
+  tags:
+    - plugins
+    - tmux.plugins
 
 - name: Install Tmux plugins
   command: /home/{{ username }}/.tmux/plugins/tpm/bin/install_plugins
   become: yes
   become_user: "{{ username }}"
   when: tpm.stat.exists
+  tags:
+    - plugins
+    - tmux.plugins

@@ -6,3 +6,5 @@
     state: restarted
   become: yes
   become_user: "{{ username }}"
+  tags:
+    - systemd

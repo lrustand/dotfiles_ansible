@@ -61,12 +61,22 @@
     dest: /etc/vim/autoload/plug.vim
     force: no
   become: yes
+  tags:
+    plugins
+    neovim.plugins
 
+    # TODO maybe disable plugins for root
 - name: Install neovim plugins for root
   command: nvim +PlugInstall! +PlugUpgrade! +PlugClean! +PlugUpdate! +qa! --headless
   become: yes
+  tags:
+    plugins
+    neovim.plugins
 
 - name: Install neovim plugins for {{ username }}
   command: nvim +PlugInstall! +PlugUpgrade! +PlugClean! +PlugUpdate! +qa! --headless
   become: yes
   become_user: "{{ username }}"
+  tags:
+    plugins
+    neovim.plugins
