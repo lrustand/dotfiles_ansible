@@ -7,6 +7,7 @@ command_not_found_handler() {
       printf '%s may be found in the following packages:\n' "$cmd"
       printf '  %s\n' $pkgs[@]
       echo -n "\nInstall it now? "
+      # TODO get choice if more than one package provides it
       while true; do
           read yn
           case $yn in

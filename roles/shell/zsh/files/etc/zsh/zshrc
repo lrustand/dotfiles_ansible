@@ -111,7 +111,7 @@ trap _trap_exit EXIT
 if [[ -v TMUX ]]; then
     # Check if has TrueColor support and set corresponding tmux active bg"
     if [ -z "$(tmux showenv TC 2>&1 | cut -s -d'=' -f2)" ]; then
-        if tmux info -t "$(tmux run 'echo #{client_tty}')" | grep Tc | grep true | grep -v Job &>/dev/null; then
+        if tmux run 'tmux info -t #{client_tty} | grep Tc | grep true | grep -v Job &>/dev/null'; then
             tmux set window-active-style "fg=default,bg=#002b36"
             tmux set-option @BG "#002b36"
             tmux setenv TC 1
