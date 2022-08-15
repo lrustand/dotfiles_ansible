@@ -14,6 +14,11 @@ runtime nerdtree.vim
 runtime keybinds.vim
 runtime completion.vim
 
+augroup highlight_yank
+    autocmd!
+    au TextYankPost * silent! lua vim.highlight.on_yank { higroup='IncSearch', timeout=200 }
+augroup END
+
 if $COLORTERM == 'truecolor'
     set termguicolors
     " TODO find alternative for no truecolor also
