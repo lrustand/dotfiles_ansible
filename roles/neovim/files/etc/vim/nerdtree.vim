@@ -1,11 +1,11 @@
 " Start NERDTree if no file argument
 function! StartUp()
     if !argc() && !exists("s:std_in")
-        NERDTree
+        silent! NERDTree
     end
     if argc() && isdirectory(argv()[0]) && !exists("s:std_in")
         ene
-        exe 'NERDTree' argv()[0]
+        exe 'silent! NERDTree' argv()[0]
         cd `=argv()[0]`
     end
 endfunction
