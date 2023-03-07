@@ -34,6 +34,8 @@ from libqtile.log_utils import logger
 
 mod = "mod4"
 hyper = "mod3"
+alt = "mod1"
+
 terminal = guess_terminal()
 
 
@@ -194,6 +196,8 @@ def focus_left(qtile):
             if w._x > qtile.current_window._x:
                 w.cmd_focus()
 
+def nop(qtile):
+    pass
 
 keys = [
     # A list of available commands that can be bound to keys can be found
@@ -231,6 +235,7 @@ keys = [
     Key([mod], "n", lazy.function(next_free_empty_group), desc="Next free empty group"),
     Key([mod], "m", lazy.window.toggle_minimize()),
     Key([mod], "f", lazy.window.toggle_fullscreen()),
+    Key(["control", alt], "Tab", lazy.function(nop)), # Ignore evil mouse button on work computer
     # Toggle between split and unsplit sides of stack.
     # Split = all windows displayed
     # Unsplit = 1 window displayed, like Max layout, but still with
