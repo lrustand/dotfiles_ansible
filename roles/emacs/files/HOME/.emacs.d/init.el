@@ -64,6 +64,7 @@
 (projectile-mode 1)
 (evil-collection-init)
 (auto-revert-mode 1)
+(save-place-mode 1)
 
 (global-undo-tree-mode 1)
 (setq undo-tree-auto-save-history t)
@@ -136,6 +137,35 @@
 	bibtex-completion-pdf-open-function
 	(lambda (fpath)
 	  (call-process "okular" nil 0 nil fpath)))
+
+(require 'lsp-latex)
+(setq lsp-latex-forward-search-executable "okular")
+(setq lsp-latex-forward-search-args '("--unique" "file:%p#src:%l%f"))
+
+(with-eval-after-load "tex-mode"
+ (add-hook 'tex-mode-hook 'lsp)
+ (add-hook 'latex-mode-hook 'lsp))
+
+;; For YaTeX
+(with-eval-after-load "yatex"
+ (add-hook 'yatex-mode-hook 'lsp))
+
+;; For bibtex
+(with-eval-after-load "bibtex"
+ (add-hook 'bibtex-mode-hook 'lsp))
+
+(add-to-list 'auto-mode-alist '("\\.\\(bb\\|bbappend\\|bbclass\\|inc\\|conf\\)\\'" . bitbake-mode))
+(with-eval-after-load 'lsp-mode
+  (add-to-list 'lsp-language-id-configuration
+    '(bitbake-mode . "bitbake"))
+  (lsp-register-client
+    (make-lsp-client
+    :new-connection (lsp-stdio-connection "bitbake-language-server")
+    :activation-fn (lsp-activate-on "bitbake")
+    :server-id 'bitbake)))
+
+(with-eval-after-load "bitbake-mode"
+ (add-hook 'bitbake-mode-hook 'lsp))
 
 (require 'mu4e)
 
