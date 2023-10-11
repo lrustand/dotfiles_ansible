@@ -94,11 +94,12 @@
   (buffer-face-set 'default))
 (add-hook 'buffer-list-update-hook 'highlight-selected-window)
 
-(defun on-after-init ()
-  (unless (display-graphic-p (selected-frame))
-    (set-face-background 'default "unspecified-bg" (selected-frame))))
-
-(add-hook 'window-setup-hook 'on-after-init)
+(add-to-list 'default-frame-alist '(background-color . "unspecified-bg"))
+;;(defun on-after-init ()
+;;  (unless (display-graphic-p (selected-frame))
+;;    (set-face-background 'default "unspecified-bg" (selected-frame))))
+;;
+;;(add-hook 'window-setup-hook 'on-after-init)
 
 (defun tmux-navigate-directions ()
   (let* ((x (nth 0 (window-edges)))
