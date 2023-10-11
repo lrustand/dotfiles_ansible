@@ -143,9 +143,9 @@
 (setq lsp-latex-forward-search-executable "okular")
 (setq lsp-latex-forward-search-args '("--unique" "file:%p#src:%l%f"))
 
-(with-eval-after-load "tex-mode"
- (add-hook 'tex-mode-hook 'lsp)
- (add-hook 'latex-mode-hook 'lsp))
+(add-hook 'tex-mode-hook 'lsp)
+(add-hook 'LaTeX-mode-hook 'lsp)
+(add-hook 'latex-mode-hook 'lsp)
 
 ;; For YaTeX
 (with-eval-after-load "yatex"
