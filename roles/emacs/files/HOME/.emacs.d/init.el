@@ -281,6 +281,22 @@
   (require 'org-roam-dailies)
   (org-roam-setup))
 
+(defun org-advance ()
+  (interactive)
+  (when (buffer-narrowed-p)
+  (beginning-of-buffer)
+  (widen)
+  (org-forward-heading-same-level 1))
+    (org-narrow-to-subtree))
+
+(defun org-retreat ()
+  (interactive)
+  (when (buffer-narrowed-p)
+    (beginning-of-buffer)
+    (widen)
+   (org-backward-heading-same-level 1))
+   (org-narrow-to-subtree))
+
 (setq backup-directory-alist '((".*" . "~/.emacs.d/backup")))
 (setq create-lockfiles nil)
 
