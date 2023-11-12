@@ -13,6 +13,7 @@
   (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
   (setq evil-want-keybinding nil)
   :config
+  (define-key evil-motion-state-map (kbd "RET") nil) ;; Disable to avoid overriding org-mode follow links
   (evil-mode 1)
   (evil-set-undo-system 'undo-tree))
 
@@ -265,6 +266,47 @@
   :config
   (erc-image-enable))
 
+(use-package org
+  :custom
+  (org-ellipsis " ▾")
+  (org-hide-emphasis-markers t)
+  (org-return-follows-link  t)
+  (org-log-done 'time)
+  (org-log-into-drawer t)
+  (org-modules (append org-modules '(org-checklist)))
+
+  :hook (org-mode . (lambda ()
+                      (org-indent-mode)
+                      (visual-line-mode 1)))
+  :config
+  (defun org-advance ()
+    (interactive)
+    (when (buffer-narrowed-p)
+    (beginning-of-buffer)
+    (widen)
+    (org-forward-heading-same-level 1))
+      (org-narrow-to-subtree))
+
+  (defun org-retreat ()
+    (interactive)
+    (when (buffer-narrowed-p)
+      (beginning-of-buffer)
+      (widen)
+     (org-backward-heading-same-level 1))
+     (org-narrow-to-subtree))
+  (evil-define-key 'normal org-mode-map (kbd "J") 'org-advance)
+  (evil-define-key 'normal org-mode-map (kbd "K") 'org-retreat))
+
+(use-package org-contrib
+  :ensure t)
+
+(use-package org-bullets
+  :ensure t
+  :after org
+  :hook (org-mode . org-bullets-mode)
+  :custom
+  (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+
 (use-package org-roam
   :ensure t
   :demand t  ;; Ensure org-roam is loaded by default
@@ -386,21 +428,6 @@ capture was not aborted."
                (when (equal org-state "DONE")
                  (my/org-roam-copy-todo-to-today))))
 
-(defun org-advance ()
-  (interactive)
-  (when (buffer-narrowed-p)
-  (beginning-of-buffer)
-  (widen)
-  (org-forward-heading-same-level 1))
-    (org-narrow-to-subtree))
-
-(defun org-retreat ()
-  (interactive)
-  (when (buffer-narrowed-p)
-    (beginning-of-buffer)
-    (widen)
-   (org-backward-heading-same-level 1))
-   (org-narrow-to-subtree))
 
 (setq backup-directory-alist '((".*" . "~/.emacs.d/backup")))
 (setq create-lockfiles nil)
